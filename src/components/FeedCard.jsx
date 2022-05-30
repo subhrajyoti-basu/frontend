@@ -6,7 +6,7 @@ export default function FeedCard({ data, index }) {
   // console.log('data card', data)
   return (
     <div className='py-3'>
-      <a onClick={() => history((index + 1).toString())}>
+      <a onClick={() => history((index + 1).toString())} className='cursor-pointer'>
         <h1>
           {data.title}
         </h1>
