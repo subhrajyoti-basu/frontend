@@ -1,9 +1,15 @@
-import './App.css'
-import { Navbar, UserData, Feed } from './components'
-import { ethers } from 'ethers';
-import { useEffect, useState } from 'react';
-import { WalletConnectedState } from './GlobalState/atom';
+import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import './App.css';
+import { Navbar } from './components';
+import Post from './components/Post';
+import { WalletConnectedState } from './GlobalState/atom';
+import EditProfile from './pages/EditProfile';
+import Home from './pages/Home';
+import Page from './pages/Page';
+import Upload from './pages/Upload';
+
 
 function App() {
   const [currentAccount, setCurrentAccount] = useRecoilState(WalletConnectedState);
@@ -11,35 +17,33 @@ function App() {
   //check if the wallet is connected or there is a wallet present
   const ifWalletisConnected = async () => {
     try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log('Install MetaMask')
+      const { arweaveWallet } = window;
+      if (!arweaveWallet) {
+        // console.log('Install arweave')
       } else {
-        console.log('we have the ethereum object', ethereum)
+        // console.log('we have the ethereum object', arweaveWallet)
       }
-      const accounts = await ethereum.request({ method: 'eth_accounts' });
-      if (accounts.length != 0) {
-        const account = accounts[0];
-        console.log(account)
-        setCurrentAccount(account)
-      }
+      const account = await arweaveWallet.getActiveAddress();
+      setCurrentAccount(account)
+      // console.log(account)
     } catch (error) {
-      console.log('an error occured')
+      console.log('an error occured', error)
     }
   }
 
   // connect wallet to the webapp
   const connectWallet = async () => {
     try {
-      const { ethereum } = window;
+      const { arweaveWallet } = window;
 
-      if (!ethereum) {
-        alert('Install Metamask!')
+      if (!arweaveWallet) {
+        alert('Install Arweave!')
         return
       }
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      setCurrentAccount(accounts[0]);
-      console.log('connected', accounts[0])
+      await arweaveWallet.connect(['ACCESS_ADDRESS', 'SIGN_TRANSACTION', 'ACCESS_PUBLIC_KEY'])
+      const account = await arweaveWallet.getActiveAddress();
+      setCurrentAccount(account);
+      // console.log('connected', account)
 
     } catch (error) {
       console.log(error)
@@ -47,16 +51,26 @@ function App() {
   }
 
   useEffect(() => {
-    ifWalletisConnected();
+    setTimeout(
+      ifWalletisConnected, 2000
+    )
+
+    // ifArweraveisConnected();
   }, [])
 
   return (
-    <div className="">
-      <Navbar method={connectWallet} />
-      <div className='lg:flex lg:justify-around max-w-7xl mx-auto'>
-        <UserData />
-        <Feed />
-      </div>
+    <div className="h-screen flex flex-col">
+      <BrowserRouter>
+        <Navbar method={connectWallet} />
+
+        <Routes>
+          <Route path="/w/:id" element={<Home />} />
+          <Route path='/w/:id/:pNo' element={<Page />} />
+
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/profile" element={<EditProfile />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

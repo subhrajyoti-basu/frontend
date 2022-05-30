@@ -26,7 +26,34 @@ code {
   h4{
     @apply text-xs;
   }
-  button{
+  button,.btn{
     @apply bg-gray-300 px-4 py-1 rounded-full hover:bg-gray-400;
+  }
+}
+
+@layer components{
+  .form > input,textarea {
+    @apply border-2 border-gray-200 rounded-md px-9 py-2 outline-none w-full ;
+  }
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .markdown > h1{
+    @apply text-2xl font-bold;
+  }
+  .markdown > h2{
+    @apply text-lg font-medium;
+  }
+  .markdown{
+    @apply space-y-3;
   }
 }
