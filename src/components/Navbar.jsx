@@ -9,11 +9,12 @@ export default function Navbar({ method }) {
     return (
         <div className='px-8 lg:px-16'>
             <div className='max-w-7xl flex justify-between items-center h-[60px] mx-auto'>
-                <h2>Herodotus</h2>
+                <h2 onClick={() => history("/")} className='cursor-pointer'>Herodotus</h2>
                 {console.log('debug', currentAccount)}
                 {!currentAccount ? <button onClick={method}>Connect Wallet</button> :
                     <div className='flex space-x-2'>
-                        <button onClick={() => history("/profile")}>Edit Profile</button>
+                        <button onClick={() => history(`/w/${currentAccount}`)}>Profile</button>
+                        <button onClick={() => history("/editprofile")}>Edit Profile</button>
                         <button onClick={() => history("/upload")}>
                             Upload
                         </button>

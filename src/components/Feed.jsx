@@ -36,23 +36,26 @@ export default function feed({ id }) {
       return
     }
 
-    const result = results.data.data.transactions.edges
+    const result = results.data.data.transactions.edges;
+    // console.log(result)
 
 
 
     result.map(async d => {
       const a = await arweave.transactions.getData(d.node.id, { decode: true, string: true })
       setData(prev => [...prev, JSON.parse(a)])
+      // data.push(JSON.parse(a))
     })
 
   }
   // console.log(data)
   useEffect(() => {
-    getResearch()
+    return () => getResearch()
   }, [])
 
   return (
     <div className='max-w-xl w-full px-4 mt-6 divide-y mx-auto'>
+      {console.log(data)}
       {data.map((d, i) =>
 
         <FeedCard data={d} index={i} />

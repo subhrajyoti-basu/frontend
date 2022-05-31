@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { arweave } from '../utils/arweave'
-
+import { useRecoilState } from 'recoil';
+import { WalletConnectedState } from '../GlobalState/atom';
 
 
 export default function Upload() {
+    let history = useNavigate();
+    const [currentAccount, setCurrentAccount] = useRecoilState(WalletConnectedState);
     const [upload, setupload] = useState({
         title: '',
         description: '',
@@ -27,6 +31,7 @@ export default function Upload() {
 
         await arweaveWallet.connect(['ACCESS_ADDRESS', 'ACCESS_PUBLIC_KEY', 'SIGN_TRANSACTION']);
         const account = await arweaveWallet.getActiveAddress()
+        setCurrentAccount(account)
         // console.log(account);
 
         let reader = new FileReader()
@@ -54,6 +59,7 @@ export default function Upload() {
             while (!uploader.isComplete) {
                 await uploader.uploadChunk();
                 // console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+                history(`/w/${currentAccount}`)
             }
         }
     }
@@ -75,7 +81,7 @@ export default function Upload() {
                 ></textarea>
                 <div>
                     <div className='upload-btn-wrapper'>
-                        <button>Select PDF</button>
+                        <button>Select MD</button>
                         <input
                             type='file'
                             name="mdFile"

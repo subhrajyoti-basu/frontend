@@ -6,9 +6,10 @@ import { Navbar } from './components';
 import Post from './components/Post';
 import { WalletConnectedState } from './GlobalState/atom';
 import EditProfile from './pages/EditProfile';
-import Home from './pages/Home';
+import Profile from './pages/Profile';
 import Page from './pages/Page';
 import Upload from './pages/Upload';
+import Home from './pages/Home';
 
 
 function App() {
@@ -64,11 +65,12 @@ function App() {
         <Navbar method={connectWallet} />
 
         <Routes>
-          <Route path="/w/:id" element={<Home />} />
+          <Route path='/' element={<Home />} />
+          <Route path="/w/:id" element={<Profile />} />
           <Route path='/w/:id/:pNo' element={<Page />} />
 
           <Route path="/upload" element={<Upload />} />
-          <Route path="/profile" element={<EditProfile />} />
+          <Route path="/editprofile" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </div>

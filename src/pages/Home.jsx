@@ -1,14 +1,13 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { UserData, Feed } from '../components'
 
 export default function Home() {
-    const { id } = useParams();
-    // console.log(id)
+
+
     return (
-        <div className='lg:flex lg:justify-around max-w-7xl w-full mx-auto'>
-            <UserData id={id} />
-            <Feed id={id} />
+        <div className='flex justify-around max-w-7xl w-full mx-auto h-full items-center'>
+            <div className='text-[80px] font-bold leading-[1] max-w-[800px]'>
+                Welcome, to the Perma Web Storage for Researchers
+            </div>
         </div>
     )
 }

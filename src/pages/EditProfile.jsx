@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { arweave } from '../utils/arweave'
+import { useRecoilState } from 'recoil';
+import { WalletConnectedState } from '../GlobalState/atom';
 
 export default function EditProfile() {
+    let history = useNavigate();
+    const [currentAccount, setCurrentAccount] = useRecoilState(WalletConnectedState);
+
+
     const [upload, setupload] = useState({
         name: '',
         institution: '',
@@ -31,7 +38,8 @@ export default function EditProfile() {
         console.log(uploader)
         while (!uploader.isComplete) {
             await uploader.uploadChunk();
-            console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+            history(`/w/${currentAccount}`)
+            // console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
         }
 
     }
